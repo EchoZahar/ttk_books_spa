@@ -2,25 +2,24 @@ import { createWebHistory, createRouter } from 'vue-router'
 import store from '@/store'
 
 /* Guest Component */
-const Login = () => import('@/components/Login.vue')
-const Register = () => import('@/components/Register.vue')
+const Login = () => import('@/components/Auth/Login.vue')
+const Register = () => import('@/components/Auth/Register.vue')
 const Books = () => import('@/components/Pages/Books.vue')
-// const App = () => import('@/components/App.vue')
 /* Guest Component */
 
 /* Layouts */
-const DashboardLayout = () => import('@/components/layouts/Default.vue')
+const AppLayout = () => import('@/components/App.vue')
 /* Layouts */
 
 /* Authenticated Component */
-const Dashboard = () => import('@/components/Dashboard.vue')
+const Dashboard = () => import('@/components/Auth/Dashboard.vue')
 /* Authenticated Component */
 
 
 const routes = [
     {
         path: "/",
-        component: DashboardLayout,
+        component: AppLayout,
         meta: {
             middleware: "guest",
         },
@@ -55,7 +54,7 @@ const routes = [
     },
     {
         path: "/dashboard",
-        component: DashboardLayout,
+        component: AppLayout,
         meta: {
             middleware: "auth"
         },
@@ -81,9 +80,9 @@ router.beforeEach((to, from, next) => {
     document.title = to.meta.title
     if (to.meta.middleware === "guest") {
         if (store.state.auth.authenticated) {
-            next()
+            next() //{ name: "dashboard" }
         }
-        next({ name: "books" })
+        next() //{ name: "books" }
     } else {
         if (store.state.auth.authenticated) {
             next()

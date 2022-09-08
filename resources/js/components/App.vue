@@ -2,30 +2,36 @@
     <nav class="navbar navbar-expand-md navbar-light bg-white shadow-sm">
         <div class="container">
             <router-link class="navbar-brand" :to="{name: 'books'}">
-                books
+                TTK books App
             </router-link>
             <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="{{ __('Toggle navigation') }}">
                 <span class="navbar-toggler-icon"></span>
             </button>
 
             <div class="collapse navbar-collapse" id="navbarSupportedContent">
-                <!-- Left Side Of Navbar -->
-                <ul class="navbar-nav me-auto">
-
+                <!-- Center Side Of Navbar -->
+                <ul class="navbar-nav ms-auto">
+                    <li class="nav-item">
+                        <router-link class="nav-link" :to="{name: 'books'}">books</router-link>
+                    </li>
                 </ul>
 
                 <!-- Right Side Of Navbar -->
-                <ul class="navbar-nav ms-auto">
+                <ul class="navbar-nav ms-auto" v-if="user === null">
                     <!-- Authentication Links -->
 
                     <li class="nav-item">
-                        <a class="nav-link" :to="{name: 'login'}">Login</a>
+                        <router-link class="nav-link" :to="{name: 'login'}">Login</router-link>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" :to="{name: 'register'}">Register</a>
+                        <router-link class="nav-link" :to="{name: 'register'}">Register</router-link>
                     </li>
 
-
+                </ul>
+                <ul  class="navbar-nav ms-auto" v-else>
+                    <li class="nav-item">
+                        <router-link class="nav-link" :to="{name: 'dashboard'}">Dashboard</router-link>
+                    </li>
                     <li class="nav-item dropdown">
                         <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink" role="button" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                             {{ user.name }}
@@ -34,7 +40,6 @@
                             <a class="dropdown-item" href="javascript:void(0)" @click="logout">Logout</a>
                         </div>
                     </li>
-
                 </ul>
             </div>
         </div>
@@ -48,10 +53,10 @@
 <script>
 import {mapActions} from 'vuex'
 export default {
-    name: "App",
+    name:"App",
     data(){
         return {
-            user: '' //this.$store.state.auth.user
+            user: null
         }
     },
     methods:{
@@ -61,7 +66,7 @@ export default {
         async logout(){
             await axios.post('/logout').then(({data})=>{
                 this.signOut()
-                this.$router.push({name:"login"})
+                this.$router.push({name: "books"})
             })
         },
         checkUser() {
@@ -75,11 +80,6 @@ export default {
     },
     mounted() {
         this.checkUser()
-        console.log(this.$store.state.auth)
     }
 }
 </script>
-
-<style scoped>
-
-</style>

@@ -28,7 +28,7 @@
                             </div>
                             <div class="form-group col-12 my-2">
                                 <label for="password_confirmation" class="font-weight-bold">Confirm Password</label>
-                                <input type="password_confirmation" name="password_confirmation" v-model="user.password_confirmation" id="password_confirmation" placeholder="Enter Password" class="form-control">
+                                <input type="password" name="password_confirmation" v-model="user.password_confirmation" id="password_confirmation" placeholder="Enter Password" class="form-control">
                             </div>
                             <div class="col-12 mb-2">
                                 <button type="submit" :disabled="processing" class="btn btn-primary btn-block">
@@ -36,7 +36,7 @@
                                 </button>
                             </div>
                             <div class="col-12 text-center">
-                                <label>Already have an account? <router-link :to="{name:'login'}">Login Now!</router-link></label>
+                                <label>Already have an account? <router-link :to="{name: 'login'}">Login Now!</router-link></label>
                             </div>
                         </form>
                     </div>

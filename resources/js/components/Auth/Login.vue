@@ -45,11 +45,11 @@ export default {
     data(){
         return {
             auth:{
-                email:"",
-                password:""
+                email: "",
+                password: ""
             },
-            validationErrors:{},
-            processing:false
+            validationErrors: {},
+            processing: false
         }
     },
     methods:{

@@ -21,7 +21,7 @@ export default {
     name:"dashboard",
     data(){
         return {
-            user:this.$store.state.auth.user
+            user: this.$store.state.auth.user
         }
     }
 }
