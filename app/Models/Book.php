@@ -33,4 +33,12 @@ class Book extends Model
     {
         return $this->belongsTo(Author::class, 'author_id', 'id');
     }
+
+    /**
+     * Polymorphic relation with section book.
+     */
+    public function sections()
+    {
+        return $this->morphedByMany(Section::class, 'bookable');
+    }
 }

@@ -5,6 +5,10 @@ import store from '@/store'
 const Login = () => import('@/components/Auth/Login.vue')
 const Register = () => import('@/components/Auth/Register.vue')
 const Books = () => import('@/components/Pages/Books.vue')
+const SectionList = () => import('@/components/Pages/SectionList.vue')
+const SectionItem = () => import('@/components/Section/SectionItem.vue')
+const BookItem = () => import("@/components/Books/BookItem.vue")
+const CreateBook = () => import("@/components/Books/CreateBook.vue")
 /* Guest Component */
 
 /* Layouts */
@@ -30,6 +34,56 @@ const routes = [
                 component: Books,
                 meta: {
                     title: `Books App`
+                }
+            },
+            {
+                name: 'getBookItem',
+                path: '/:id',
+                component: BookItem,
+                meta: {
+                    title: `Book`
+                }
+            }
+        ]
+    },
+    {
+        path: "/",
+        component: AppLayout,
+        meta: {
+            middleware: "auth"
+        },
+        children: [
+            {
+                name: 'createBook',
+                path: '/create',
+                component: CreateBook,
+                meta: {
+                    title: `Create book`
+                }
+            }
+        ]
+    },
+    {
+        path: "/sections",
+        component: AppLayout,
+        meta: {
+            middleware: "guest",
+        },
+        children: [
+            {
+                name: "sections",
+                path: '/sections',
+                component: SectionList,
+                meta: {
+                    title: `Sections App`
+                }
+            },
+            {
+                name: 'getOneSection',
+                path: '/sections/:id',
+                component: SectionItem,
+                meta: {
+                    title: 'section item'
                 }
             }
         ]

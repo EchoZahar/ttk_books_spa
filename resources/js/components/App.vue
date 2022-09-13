@@ -14,6 +14,9 @@
                     <li class="nav-item">
                         <router-link class="nav-link" :to="{name: 'books'}">books</router-link>
                     </li>
+                    <li class="nav-item" v-if="sections.length > 0" v-for="section in sections" :key="section.id">
+                        <router-link class="nav-link" :to="{name: 'getOneSection', params: {id: section.id}}">{{ section.name }}</router-link>
+                    </li>
                 </ul>
 
                 <!-- Right Side Of Navbar -->
@@ -29,15 +32,13 @@
 
                 </ul>
                 <ul  class="navbar-nav ms-auto" v-else>
-                    <li class="nav-item">
-                        <router-link class="nav-link" :to="{name: 'dashboard'}">Dashboard</router-link>
-                    </li>
                     <li class="nav-item dropdown">
                         <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink" role="button" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                             {{ user.name }}
                         </a>
                         <div class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdownMenuLink">
-                            <a class="dropdown-item" href="javascript:void(0)" @click="logout">Logout</a>
+                            <router-link class="dropdown-item" :to="{name: 'dashboard'}">Dashboard</router-link>
+                            <a class="dropdown-item" @click="logout">Logout</a>
                         </div>
                     </li>
                 </ul>
@@ -56,30 +57,43 @@ export default {
     name:"App",
     data(){
         return {
-            user: null
+            sections: {},
+            user: null,
+            errors: false
         }
     },
     methods:{
         ...mapActions({
             signOut: "auth/logout"
         }),
-        async logout(){
+        async logout() {
             await axios.post('/logout').then(({data})=>{
                 this.signOut()
+                this.checkUser()
                 this.$router.push({name: "books"})
             })
         },
         checkUser() {
-            if (this.$store.state.auth) {
+            if (this.$store.state.auth.authenticated === true) {
                 this.user = this.$store.state.auth.user
             }
-            else {
+            else if(this.$store.state.auth.authenticated === false) {
                 this.user = null
             }
+        },
+        async getSections() {
+            await axios.get('api/sections').then(response => {
+                this.sections = response.data.data
+            }).catch(e => {
+                this.errors = e
+            })
         }
     },
     mounted() {
         this.checkUser()
+        this.getSections()
+        // console.log(this.$store.state.auth)
+        // console.log(this.$store.state.auth.authenticated === false)
     }
 }
 </script>
